@@ -1,0 +1,23 @@
+Dependencies for Project 'Analog', Target 'KL25Z Flash': (DO NOT MODIFY !)
+F (.\src\system_MKL25Z4.c)(0x60BE29CE)(-c --cpu Cortex-M0+ -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I .\inc-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Freescale\Kinetis-D__UVISION_VERSION="526"-o .\obj\system_mkl25z4.o --omf_browse .\obj\system_mkl25z4.crf --depend .\obj\system_mkl25z4.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F3DAE)
+I (C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.h)(0x6097DA70)
+I (C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h)(0x559D4E0A)
+I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x559D4E0A)
+I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x559D4E0A)
+I (C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h)(0x559D4372)
+F (.\asm\startup_MKL25Z4.s)(0x60C38459)(--cpu Cortex-M0+ --pd "__EVAL SETA 1" -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Freescale\Kinetis--pd "__UVISION_VERSION SETA 526"--list .\lst\startup_mkl25z4.lst --xref -o .\obj\startup_mkl25z4.o --depend .\obj\startup_mkl25z4.d)
+F (.\src\main.c)(0x60C8FDF2)(-c --cpu Cortex-M0+ -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I .\inc-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Freescale\Kinetis-D__UVISION_VERSION="526"-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
+I (C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.H)(0x6097DA70)
+I (C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h)(0x559D4E0A)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F3DAE)
+I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x559D4E0A)
+I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x559D4E0A)
+I (C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h)(0x559D4372)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599F3DAC)
+I (src\my_defs.h)(0x60C8FE65)
+I (.\inc\float32.h)(0x60C8B7A1)
+I (.\inc\notch32.h)(0x60C8BC6F)
+F (.\inc\gpio_defs.h)(0x60BE29CE)()
+F (.\inc\switches.h)(0x60BE29CE)()
+F (.\inc\LCD_4bit.h)(0x60BE29CE)()
