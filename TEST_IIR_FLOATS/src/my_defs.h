@@ -6,7 +6,7 @@
 
 // PIT timer parameters
 #define F_CLOCK (24e6)
-#define F_SAMPLING (500)  // sampling frequency in Hz -> Max Fs: 15473 Hz
+#define F_SAMPLING (500)  // sampling frequency in Hz
 #define PIT_LDVAL ((uint32_t)(F_CLOCK/F_SAMPLING)-1)  // Value of register PIT_LDVAL
 
 
@@ -14,8 +14,6 @@
 #define MASK1(x) (1UL << (x))
 #define RED_LED_POS (18)		// on port B
 #define GREEN_LED_POS (19)	// on port B
-#define BLUE_LED_POS (1)    // on port D
-#define SWITCH_POS (0)	// on port B
 
 // AND: Channel ADC0_SE3 is PTE22
 #define ADC_CHANNEL (3) 
@@ -47,3 +45,4 @@
 
 
 #endif
+
