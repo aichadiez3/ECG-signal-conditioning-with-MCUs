@@ -3,8 +3,7 @@
 #include "my_defs.h"
 
 
-//uint32_t counter=0;
-float input[ISZ], window[F_SAMPLING];
+float input[ISZ], window[500];
 float output1[OSZ], output2[OSZ];
 float sample, filtered_sample;
 
@@ -70,27 +69,18 @@ int8_t read_ADC(){
 void Init_pins(void) {
  // 1. Enable the clock for the ports used
 	SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
-	SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
- // 2. Configure the MUX field in the PCR of pins
-	PORTB->PCR[SWITCH_POS] &= ~(PORT_PCR_MUX_MASK|PORT_PCR_PE_MASK);          
-	PORTB->PCR[SWITCH_POS] |= ( PORT_PCR_MUX(1)|PORT_PCR_PE_MASK|PORT_PCR_PS_MASK );          
+ // 2. Configure the MUX field in the PCR of pins     
 	PORTB->PCR[RED_LED_POS] &= ~(PORT_PCR_MUX_MASK|PORT_PCR_PE_MASK);          
 	PORTB->PCR[RED_LED_POS] |= PORT_PCR_MUX(1);          
 	PORTB->PCR[GREEN_LED_POS] &= ~(PORT_PCR_MUX_MASK);          
 	PORTB->PCR[GREEN_LED_POS] |= PORT_PCR_MUX(1);     
-	PORTD->PCR[BLUE_LED_POS] &= ~(PORT_PCR_MUX_MASK);          
-	PORTD->PCR[BLUE_LED_POS] |= PORT_PCR_MUX(1);   	
 	
  // 3. Configure the direction (input or outputs) of pins
 	PTB->PDDR |= (MASK1(RED_LED_POS) | MASK1(GREEN_LED_POS));
-	PTB->PDDR &= ~(MASK1(SWITCH_POS));
-	PTD->PDDR &= ~MASK1(SWITCH_POS);
-	PTD->PDDR |= MASK1(BLUE_LED_POS);
 	
 	// 4. Switch off all LEDs
-	PTB->PSOR = (MASK1(RED_LED_POS) | MASK1(GREEN_LED_POS) | MASK1(BLUE_LED_POS));
-	PTD->PSOR = MASK1(BLUE_LED_POS);
+	PTB->PSOR = (MASK1(RED_LED_POS) | MASK1(GREEN_LED_POS));
 }
 
 void Init_PIT(void) {
@@ -110,7 +100,7 @@ void Init_PIT(void) {
  // 5. Initialize PIT0 to count down from starting_value
 	PIT->CHANNEL[0].LDVAL = PIT_LDVAL;	
 	
-	NVIC_SetPriority(PIT_IRQn, 128); // 0, 64, 128 or 192
+  NVIC_SetPriority(PIT_IRQn, 128); // 0, 64, 128 or 192
   NVIC_ClearPendingIRQ(PIT_IRQn); 
   NVIC_EnableIRQ(PIT_IRQn);	
 
@@ -171,7 +161,6 @@ void PIT_IRQHandler() {
 		if( Win == Rin_minus){  // Check delayed data is going to be overwritten
 			PTB->PCOR = MASK1(RED_LED_POS); // Shine RED LED and stay here forever
 			PTB->PSOR = MASK1(GREEN_LED_POS); // Shine RED LED and stay here forever
-			PTD->PSOR = MASK1(BLUE_LED_POS); // Shine BLUE LED and stay here forever
 			
 			while(1);										// infinite loop
 		}
@@ -195,7 +184,7 @@ float signal_threshold(float window[]){
 	int i;
 	
 		// Gets the maximum amplitude value of the window
-		for(i=0; i<F_SAMPLING; i++){
+		for(i=0; i<500; i++){
 			if(window[i]>max_value)
 				max_value = window[i];
 			}
@@ -311,7 +300,7 @@ void iir_filter(float *x, float *y){
  *----------------------------------------------------------------------------*/
 int main (void) {
 	int i, counter=0;
-	float threshold = BEAT_THRESHOLD; // As initialziation, threshold=40
+	float threshold = BEAT_THRESHOLD; // As initialziation, threshold=4
 	
 	Init_ADC();			// initialize ADC
 	Init_PIT();			// initialize periodic timer
@@ -343,26 +332,20 @@ int main (void) {
 			iir_filter(&sample, &filtered_sample);
 				
 			if (counter < sizeof(window)) {
-					window[counter] = filtered_sample;
-					counter++;
+				window[counter] = filtered_sample;
+				counter++;
 					
 			} else {
 				
-					threshold = signal_threshold(window);
-				
-					if (filtered_sample > threshold)
-						PTB->PCOR = MASK1(GREEN_LED_POS); // Shine GREEN LED while y[n]>threshold
-								
-					else {
-						PTB->PSOR = MASK1(GREEN_LED_POS); // Don't shine RED LED while y[n]<=threshold
-						PTD->PSOR = MASK1(BLUE_LED_POS);
-					}
-					
-					if ( (PTB->PDIR & MASK1(SWITCH_POS))==0 ){ // When botton pushed once, Terminates the algorithm
-							
-							PTD->PCOR = MASK1(BLUE_LED_POS);
-							return 0; 
-						}
+				threshold = signal_threshold(window);
+
+				if (filtered_sample > threshold)
+					PTB->PCOR = MASK1(GREEN_LED_POS); // Shine GREEN LED while y[n]>threshold
+
+				else {
+					PTB->PSOR = MASK1(GREEN_LED_POS); // Don't shine RED LED while y[n]<=threshold
+				}
+
 				
 				
 			}
